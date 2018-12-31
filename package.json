@@ -1,0 +1,72 @@
+{
+  "name": "Office-Desktop",
+  "version": "0.0.1",
+  "productName": "Office Desktop",
+  "description": "Office Online Desktop For Windows macOS and Linux",
+  "author": "Cihpin <Chihpin@users.noreply.github.com>",
+  "license": "MIT",
+  "keywords": [
+    "office",
+    "word",
+    "electron"
+  ],
+  "repository": "https://github.com/Chihpin/Office-Desktop.git",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps",
+    "dist": "electron-builder --publish=always onTagOrDraft"
+  },
+  "main": "main.js",
+  "dependencies": {
+    "electron-updater": "^4.0.6"
+  },
+  "devDependencies": {
+    "electron": "^4.0.0",
+    "electron-builder": "^20.38.4"
+  },
+
+
+  "build": {
+    "appId": "com.chihpin.officedestop",
+    "mac": {
+      "files":{
+        "filter": ["!doc/*"]
+      },
+      "icon": "build/icon.icns",
+      "category": "public.app-category.utilities"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "files":{
+        "filter": ["!doc/*"]
+      },
+      "icon": "build/icon.ico",
+      "target": "nsis"
+    },
+    "linux": {
+      "files":{
+        "filter": ["!doc/*"]
+      },
+      "icon": "build/icons",
+      "category": "Utility",
+      "target": [
+        "deb",
+        "AppImage"
+      ]
+    }
+  }
+}

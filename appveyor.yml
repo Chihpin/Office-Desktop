@@ -1,0 +1,21 @@
+platform:
+  - x64
+
+cache:
+  - node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+
+install:
+  - ps: Install-Product node 8 x64
+  - npm config set registry https://registry.npmjs.org/
+  - npm install --frozen-lockfile
+
+build_script:
+  - npm run dist
+
+test: off
+
+branches:
+  only:
+    - master
