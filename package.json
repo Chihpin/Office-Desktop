@@ -19,19 +19,20 @@
   },
   "main": "main.js",
   "dependencies": {
+    "buffer": "^5.2.1",
     "electron-updater": "^4.0.6"
   },
   "devDependencies": {
     "electron": "^4.0.0",
     "electron-builder": "^20.38.4"
   },
-
-
   "build": {
     "appId": "com.chihpin.officedestop",
     "mac": {
-      "files":{
-        "filter": ["!doc/*"]
+      "files": {
+        "filter": [
+          "!doc/*"
+        ]
       },
       "icon": "build/icon.icns",
       "category": "public.app-category.utilities"
@@ -51,15 +52,19 @@
       ]
     },
     "win": {
-      "files":{
-        "filter": ["!doc/*"]
+      "files": {
+        "filter": [
+          "!doc/*"
+        ]
       },
       "icon": "build/icon.ico",
       "target": "nsis"
     },
     "linux": {
-      "files":{
-        "filter": ["!doc/*"]
+      "files": {
+        "filter": [
+          "!doc/*"
+        ]
       },
       "icon": "build/icons",
       "category": "Utility",

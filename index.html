@@ -5,26 +5,52 @@
     <link href="./lib/holdon/HoldOn.min.css" rel="stylesheet">
 
     <style text="css">
+      /* / 禁止文字选中 */
+      .disable-select {
+        moz-user-select:-moz-none;
+        -moz-user-select:none;
+        -o-user-select:none;
+        -khtml-user-select:none;
+        -webkit-user-select:none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+      
       html, body {
         width: 100%;
         height: 100%;
         margin: 0 !important;
         padding: 0 !important;
       }
-      #bar {
-        width: 100%;
-        line-height: 24px;
-        background-color: rgba(60, 60, 60, 0.8);
-        -webkit-app-region: drag;
+      /* The arrow at the top of the window */
+      #header-arrow {
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        margin-left: -5px;
+        height: 15px;
+        width: 15px;
+        transform: rotate(45deg);
 
+
+        /* background-color: rgba(60, 60, 60, 0.8); */
+        /* opacity: 0; */
+        /* z-index: -100; */
+      }
+
+      #header {
+        width: 100%;
+        height: 24px;
+        line-height: 24px;
+        /* background-color: rgba(250, 250, 250, 1); */
+        background-color: rgb(60, 60, 60);
+        -webkit-app-region: drag;
         text-align: center;
         font-size: 13px;
         font-weight: 750;
         color: rgb(164, 164, 164);
-        /* opacity: 0; */
-        /* float: top; */
-        z-index: -100;
       }
+      
       /* #bar:hover {
         opacity: 1;
       }
@@ -32,14 +58,11 @@
         opacity: 1;
       } */
       #web {
-        /* margin-top: 24px; */
         background-color: rgb(28, 29, 29);
         border: none;
         width: 100%; 
         height: 676px; 
-        /* position:absolute; */
-        /* height: calc(100%-24px);  not working */ 
-        display: inline-flex; 
+        display: inline-flex;
       }
     </style>
 
@@ -47,7 +70,12 @@
 
     <script type="text/javascript">
       var $ = jQuery = require("./lib/jq.js")
-
+      jQuery.expr[':'].regex = function(elem, index, match) {
+          var regex = new RegExp(match[3]),
+              $elem = $(elem);
+          return regex.test($elem.attr('class')) || regex.test($elem.attr('id')); 
+      };
+      
       function getQueryString(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
@@ -61,19 +89,37 @@
           const loadstart = () => {
             HoldOn.open({
               theme:"sk-rect",
-              // backgroundColor: rgba(0, 0, 0, 0),
             });
           }
           const loadstop = () => {
             HoldOn.close()
           }
+
+
           webview.addEventListener('did-start-loading', loadstart)
           webview.addEventListener('did-stop-loading', loadstop)
 
-          
+          // const browserView = document.getElementById('browserGoogle')
+          webview.addEventListener('dom-ready', function() {
+            // webview.openDevTools();
+            // $("#webview")[0].openDevTools();
+
+            // const browser = browserView.getWebContents()
+            // browser.setDevToolsWebContents(devtoolsView.getWebContents())
+            // webview.executeJavaScript('$("div:regex(class, .*_AppName.*)").hidden()')
+            // webview.insertCSS('html,body{ background-color: #FF0000 !important;}')
+          });
+
           // set titie and url
-          $('#title').text(getQueryString('title'))
-          $('#web').attr('src', getQueryString('url'))
+          let tray = getQueryString('tray')
+          let title = atob(getQueryString('title'))
+          let url = atob(getQueryString('url'))
+          if (tray == 0) {
+            $('#title').text(title)
+          } else {
+            $('#title').hidden()
+          }
+          $('#web').attr('src', url)
 
 
           // auto set webview fill window
@@ -95,11 +141,10 @@
 
 
   <body style="overflow: hidden;">
-    <div id="bar">
-      <span id="title">Office</span>
+    <div id="header" class="disable-select">
+      <span id="title"></span>
     </div>
     <webview id="web"></webview>
-
 
     <script src="./lib/holdon/HoldOn.min.js"></script>
     <script>
